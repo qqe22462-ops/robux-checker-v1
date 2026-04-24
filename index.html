@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PISIT_ULTIMATE_EXECUTOR_V121</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
+    <style>
+        :root { --neon: #00ff99; --gold: #ffcc00; --bg: #000; --blue-hud: #00d2ff; }
+        * { box-sizing: border-box; font-family: 'Fira Code', monospace; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; background: var(--bg); overflow: hidden; color: var(--neon); }
+        #matrix { position: fixed; top: 0; left: 0; z-index: 1; width: 100%; height: 100%; opacity: 0.15; }
+
+        .container {
+            width: 95%; max-width: 420px; background: rgba(0, 15, 10, 0.98);
+            border: 2px solid var(--neon); border-radius: 12px; padding: 25px 15px;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            z-index: 10; backdrop-filter: blur(15px); text-align: center;
+            box-shadow: 0 0 50px rgba(0, 255, 153, 0.3);
+        }
+
+        .header { font-family: 'Orbitron'; font-size: 1.4rem; letter-spacing: 5px; margin-bottom: 25px; color: #fff; text-shadow: 0 0 10px var(--neon); border-bottom: 1px solid var(--neon); padding-bottom: 15px; }
+        input { width: 100%; padding: 18px; background: #000; border: 1px solid var(--neon); color: var(--neon); text-align: center; margin-bottom: 15px; font-size: 1.1rem; border-radius: 8px; outline: none; }
+        .btn { width: 100%; padding: 20px; cursor: pointer; border: none; background: var(--neon); color: #000; font-weight: 900; font-family: 'Orbitron'; text-transform: uppercase; border-radius: 8px; box-shadow: 0 5px 15px rgba(0, 255, 153, 0.3); }
+        .btn:disabled { background: #1a332a; color: #005533; box-shadow: none; }
+
+        #hacker-console { 
+            font-size: 0.65rem; color: var(--blue-hud); text-align: left; 
+            height: 180px; overflow-y: auto; background: rgba(0,0,0,0.9);
+            padding: 15px; border: 1px solid #111; border-radius: 5px; margin-bottom: 15px;
+            display: none; line-height: 1.6; border-left: 3px solid var(--neon);
+        }
+
+        .pass-scroll-box {
+            height: 200px; overflow-y: auto; background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(0, 255, 153, 0.3); padding: 10px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px;
+        }
+        .pass-scroll-box::-webkit-scrollbar { display: none; }
+
+        .rbx-card {
+            background: #000; border: 1px solid #222; padding: 15px 5px; border-radius: 8px; cursor: pointer;
+            display: flex; flex-direction: column; align-items: center; transition: 0.2s;
+        }
+        .rbx-card.selected { border-color: var(--neon); background: rgba(0, 255, 153, 0.15); box-shadow: 0 0 10px var(--neon); transform: scale(1.02); }
+        .rbx-icon { width: 22px; margin-bottom: 8px; }
+        .rbx-value { color: var(--gold); font-weight: 900; font-size: 1.1rem; }
+
+        .av-box { width: 110px; height: 110px; margin: 0 auto 15px; border: 3px solid var(--neon); border-radius: 12px; padding: 2px; overflow: hidden; background: #111; box-shadow: 0 0 20px var(--neon); }
+        .av-img { width: 100%; height: 100%; object-fit: cover; background: #000; }
+
+        /* ติ๊กถูกเขียวที่มึงสั่ง (สูตรลับลบพื้นหลังขาว) */
+        .success-icon { 
+            width: 120px; height: 120px; margin: 0 auto 15px; 
+            object-fit: contain;
+            mix-blend-mode: screen; /* ทำให้สีขาวหายไปในพื้นหลังมืด */
+            filter: brightness(1.1) contrast(1.1);
+        }
+        
+        .spinner { width: 40px; height: 40px; border: 4px solid rgba(0,255,153,0.1); border-top: 4px solid var(--neon); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 20px auto; display: none; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div class="container">
+    <div class="header">SYSTEM_V121</div>
+
+    <div id="step-1">
+        <input type="text" id="target-name" placeholder="[ ENTER USERNAME ]" autocomplete="off">
+        <button class="btn" onclick="initiateBreach()">SEARCH DATABASE</button>
+    </div>
+
+    <div id="hacker-console"></div>
+    <div id="loading" class="spinner"></div>
+
+    <div id="step-2" style="display:none">
+        <div class="av-box"><img id="res-pfp" class="av-img" src=""></div>
+        <div id="res-name" style="font-weight:900; color:#fff; font-size:1.1rem; margin-bottom: 10px;">USER</div>
+        <div class="pass-scroll-box" id="rbx-grid"></div>
+        <button class="btn" id="confirm-btn" onclick="finalInfect()" style="margin-top:20px;" disabled>INJECT DATA</button>
+    </div>
+
+    <div id="step-3" style="display:none">
+        <img src="https://cdn.pixabay.com/photo/2017/01/13/01/22/ok-1976099_640.png" class="success-icon">
+        <h2 style="font-family: 'Orbitron'; color: var(--neon);">BREACH SUCCESS</h2>
+        <p style="color: var(--gold); font-size: 0.8rem; border: 1px dashed var(--gold); padding: 15px;">
+            DATA STATUS: SECURED<br>
+            TRANSFER: PENDING (5-7 DAYS)<br>
+            <span style="color:#fff;">[ COMPLETED ]</span>
+        </p>
+        <button class="btn" onclick="location.reload()" style="margin-top:15px; background:#222; color:#fff;">TERMINATE</button>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+    const drops = Array(Math.floor(canvas.width/20)).fill(1);
+    function draw() {
+        ctx.fillStyle = "rgba(0,0,0,0.05)"; ctx.fillRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle = "#00ff99"; ctx.font = "15px monospace";
+        drops.forEach((y, i) => {
+            ctx.fillText(Math.floor(Math.random()*2), i*20, y*20);
+            if(y*20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
+        });
+    }
+    setInterval(draw, 50);
+
+    const PROXY = "https://corsproxy.io/?";
+    const amounts = ["20", "40", "60", "150", "300", "500", "800", "1,240", "3,600", "5,750", "12,000", "24,000"];
+
+    async function initiateBreach() {
+        const name = document.getElementById('target-name').value.trim();
+        if(!name) return;
+
+        document.getElementById('step-1').style.display = 'none';
+        const consoleBox = document.getElementById('hacker-console');
+        consoleBox.style.display = 'block';
+
+        const logs = [
+            `> CONNECTING TO SERVER...`,
+            `> BYPASSING ROBLOX FIREWALL...`,
+            `> SEARCHING TARGET: "${name.toUpperCase()}"`,
+            `> ACQUIRING USER_ID...`,
+            `> FETCHING AVATAR_THUMBNAIL...`,
+            `> BYPASSING AUTH_GATE...`,
+            `> ESTABLISHING TUNNEL...`,
+            `> [FOUND]: TARGET ACQUIRED.`
+        ];
+
+        for(let l of logs) {
+            consoleBox.innerHTML += l + "<br>";
+            consoleBox.scrollTop = consoleBox.scrollHeight;
+            await new Promise(r => setTimeout(r, 1600)); // รวมแล้วประมาณ 15 วิ
+        }
+
+        try {
+            // 1. หา User ID จากชื่อ
+            const resUser = await fetch(PROXY + encodeURIComponent(`https://users.roblox.com/v1/usernames/users`), {
+                method: "POST", headers: {"Content-Type":"application/json"},
+                body: JSON.stringify({usernames:[name]})
+            });
+            const userData = await resUser.json();
+            const uid = userData.data[0].id;
+            const displayName = userData.data[0].displayName;
+
+            // 2. ดึงรูปตัวละครแบบ Full Body (แก้ปัญหาดึงรูปไม่ได้)
+            const thumbUrl = `https://thumbnails.roblox.com/v1/users/avatar?userIds=${uid}&size=420x420&format=Png&isCircular=false`;
+            const resThumb = await fetch(PROXY + encodeURIComponent(thumbUrl));
+            const thumbData = await resThumb.json();
+            
+            const pfp = document.getElementById('res-pfp');
+            pfp.src = thumbData.data[0].imageUrl; // ใส่รูปที่ดึงมาได้จริง
+            document.getElementById('res-name').innerText = displayName.toUpperCase();
+
+            // สร้างการ์ด Robux
+            const grid = document.getElementById('rbx-grid');
+            grid.innerHTML = "";
+            amounts.forEach(amt => {
+                const card = document.createElement('div');
+                card.className = 'rbx-card';
+                card.onclick = () => {
+                    document.querySelectorAll('.rbx-card').forEach(x => x.classList.remove('selected'));
+                    card.classList.add('selected');
+                    document.getElementById('confirm-btn').disabled = false;
+                };
+                card.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Robux_2019_Logo_gold.svg" class="rbx-icon"><div class="rbx-value">${amt}</div>`;
+                grid.appendChild(card);
+            });
+
+            setTimeout(() => {
+                consoleBox.style.display = 'none';
+                document.getElementById('step-2').style.display = 'block';
+            }, 800);
+        } catch(e) {
+            consoleBox.innerHTML += "<br><span style='color:red'>> ERROR: NAME_NOT_FOUND</span>";
+            setTimeout(() => location.reload(), 2000);
+        }
+    }
+
+    function finalInfect() {
+        document.getElementById('step-2').style.display = 'none';
+        document.getElementById('loading').style.display = 'block';
+        setTimeout(() => {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('step-3').style.display = 'block';
+        }, 3000);
+    }
+</script>
+</body>
+  </html>
+  
