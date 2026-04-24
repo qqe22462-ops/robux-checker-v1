@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#000000">
-    <title>PISIT_ULTIMATE_EXECUTOR_V128</title>
+    <title>PISIT_ULTIMATE_EXECUTOR_V129</title>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Orbitron:wght@400;900&family=Kanit:wght@300;500&display=swap" rel="stylesheet">
     <style>
         :root { --neon: #00ff99; --gold: #ffcc00; --bg: #000; --blue-hud: #00d2ff; }
@@ -73,21 +73,21 @@
                 <div style="font-weight: 500; font-size: 1.1rem;" id="g-item-name">Robux</div>
                 <div style="font-size: 0.85rem; color: #5f6368;">Roblox Corporation</div>
             </div>
-            <div style="font-weight:500; font-size:1.2rem;" id="g-price">฿0.00</div>
+            <div style="font-weight:500; font-size:1.2rem;" id="g-price">$0.00</div>
         </div>
         <div class="wallet-row">
             <img src="https://1000logos.net/wp-content/uploads/2021/07/Google-Play-Logo.png" style="width:25px; margin-right:15px;">
             <div>
                 <div style="font-size: 1rem; color: #202124;">Google Play Store</div>
-                <div style="font-size: 0.85rem; color: #5f6368;">ยอดเงินคงเหลือ: ฿<span id="balance-display">288,075,100</span></div>
+                <div style="font-size: 0.85rem; color: #5f6368;">Current Balance: $<span id="balance-display">288,075,100</span></div>
             </div>
         </div>
-        <button class="buy-btn" id="final-buy-btn" onclick="processPayment()">ซื้อในคลิกเดียว</button>
+        <button class="buy-btn" id="final-buy-btn" onclick="processPayment()">1-tap buy</button>
     </div>
 </div>
 
 <div class="container">
-    <div class="header">SYSTEM_V128</div>
+    <div class="header">SYSTEM_V129</div>
     <div id="step-1">
         <input type="text" id="target-name" placeholder="[ ENTER USERNAME ]" autocomplete="off">
         <button class="btn" onclick="initiateBreach()">SEARCH DATABASE</button>
@@ -170,7 +170,7 @@
                     selectedRobux = amt; selectedCost = cost;
                     document.getElementById('confirm-btn').disabled = false;
                 };
-                card.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Robux_2019_Logo_gold.svg" width="18"><div style="color:var(--gold); font-weight:900;">${amt}</div><div style="font-size:0.6rem; color:#555;">฿${cost.toLocaleString()}</div>`;
+                card.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Robux_2019_Logo_gold.svg" width="18"><div style="color:var(--gold); font-weight:900;">${amt}</div><div style="font-size:0.6rem; color:#555;">$${cost.toLocaleString()}</div>`;
                 grid.appendChild(card);
             });
             consoleBox.style.display = 'none';
@@ -183,16 +183,15 @@
 
     function openPay() {
         document.getElementById('g-item-name').innerText = `${selectedRobux} Robux`;
-        document.getElementById('g-price').innerText = `฿${selectedCost.toLocaleString()}.00`;
+        document.getElementById('g-price').innerText = `$${selectedCost.toLocaleString()}.00`;
         document.getElementById('balance-display').innerText = wallet.toLocaleString();
         document.getElementById('google-pay-modal').style.display = 'flex';
     }
 
     function processPayment() {
-        // หักเงินทันทีตอนกดปุ่ม
         wallet -= selectedCost;
         document.getElementById('balance-display').innerText = wallet.toLocaleString();
-        document.getElementById('final-buy-btn').innerText = "กำลังดำเนินการ...";
+        document.getElementById('final-buy-btn').innerText = "Processing...";
         document.getElementById('final-buy-btn').disabled = true;
 
         setTimeout(() => {
@@ -204,8 +203,8 @@
                 document.getElementById('step-3').style.display = 'block';
                 document.getElementById('final-stats').innerHTML = `
                     > RECEIVED: ${selectedRobux} ROBUX<br>
-                    > DEBITED: ฿${selectedCost.toLocaleString()}<br>
-                    > NEW BALANCE: ฿${wallet.toLocaleString()}<br>
+                    > DEBITED: $${selectedCost.toLocaleString()}<br>
+                    > NEW BALANCE: $${wallet.toLocaleString()}<br>
                     > STATUS: SECURED
                 `;
             }, 2500);
