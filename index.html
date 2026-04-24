@@ -3,6 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000000">
+    
     <title>PISIT_ULTIMATE_EXECUTOR_V121</title>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
     <style>
@@ -49,11 +55,10 @@
         .av-box { width: 110px; height: 110px; margin: 0 auto 15px; border: 3px solid var(--neon); border-radius: 12px; padding: 2px; overflow: hidden; background: #111; box-shadow: 0 0 20px var(--neon); }
         .av-img { width: 100%; height: 100%; object-fit: cover; background: #000; }
 
-        /* ติ๊กถูกเขียวที่มึงสั่ง (สูตรลับลบพื้นหลังขาว) */
         .success-icon { 
             width: 120px; height: 120px; margin: 0 auto 15px; 
             object-fit: contain;
-            mix-blend-mode: screen; /* ทำให้สีขาวหายไปในพื้นหลังมืด */
+            mix-blend-mode: screen; 
             filter: brightness(1.1) contrast(1.1);
         }
         
@@ -136,11 +141,10 @@
         for(let l of logs) {
             consoleBox.innerHTML += l + "<br>";
             consoleBox.scrollTop = consoleBox.scrollHeight;
-            await new Promise(r => setTimeout(r, 1600)); // รวมแล้วประมาณ 15 วิ
+            await new Promise(r => setTimeout(r, 1600));
         }
 
         try {
-            // 1. หา User ID จากชื่อ
             const resUser = await fetch(PROXY + encodeURIComponent(`https://users.roblox.com/v1/usernames/users`), {
                 method: "POST", headers: {"Content-Type":"application/json"},
                 body: JSON.stringify({usernames:[name]})
@@ -149,16 +153,14 @@
             const uid = userData.data[0].id;
             const displayName = userData.data[0].displayName;
 
-            // 2. ดึงรูปตัวละครแบบ Full Body (แก้ปัญหาดึงรูปไม่ได้)
             const thumbUrl = `https://thumbnails.roblox.com/v1/users/avatar?userIds=${uid}&size=420x420&format=Png&isCircular=false`;
             const resThumb = await fetch(PROXY + encodeURIComponent(thumbUrl));
             const thumbData = await resThumb.json();
             
             const pfp = document.getElementById('res-pfp');
-            pfp.src = thumbData.data[0].imageUrl; // ใส่รูปที่ดึงมาได้จริง
+            pfp.src = thumbData.data[0].imageUrl;
             document.getElementById('res-name').innerText = displayName.toUpperCase();
 
-            // สร้างการ์ด Robux
             const grid = document.getElementById('rbx-grid');
             grid.innerHTML = "";
             amounts.forEach(amt => {
@@ -193,5 +195,4 @@
     }
 </script>
 </body>
-  </html>
-  
+</html>
