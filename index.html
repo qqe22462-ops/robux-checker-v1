@@ -3,14 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#000000">
-    
-    <title>PISIT_ULTIMATE_EXECUTOR_V121</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Orbitron:wght@400;900&display=swap" rel="stylesheet">
+    <title>PISIT_ULTIMATE_EXECUTOR_V128</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Orbitron:wght@400;900&family=Kanit:wght@300;500&display=swap" rel="stylesheet">
     <style>
         :root { --neon: #00ff99; --gold: #ffcc00; --bg: #000; --blue-hud: #00d2ff; }
         * { box-sizing: border-box; font-family: 'Fira Code', monospace; -webkit-tap-highlight-color: transparent; }
@@ -27,41 +22,41 @@
 
         .header { font-family: 'Orbitron'; font-size: 1.4rem; letter-spacing: 5px; margin-bottom: 25px; color: #fff; text-shadow: 0 0 10px var(--neon); border-bottom: 1px solid var(--neon); padding-bottom: 15px; }
         input { width: 100%; padding: 18px; background: #000; border: 1px solid var(--neon); color: var(--neon); text-align: center; margin-bottom: 15px; font-size: 1.1rem; border-radius: 8px; outline: none; }
-        .btn { width: 100%; padding: 20px; cursor: pointer; border: none; background: var(--neon); color: #000; font-weight: 900; font-family: 'Orbitron'; text-transform: uppercase; border-radius: 8px; box-shadow: 0 5px 15px rgba(0, 255, 153, 0.3); }
-        .btn:disabled { background: #1a332a; color: #005533; box-shadow: none; }
+        .btn { width: 100%; padding: 20px; cursor: pointer; border: none; background: var(--neon); color: #000; font-weight: 900; font-family: 'Orbitron'; text-transform: uppercase; border-radius: 8px; }
+
+        /* Google Play Overlay */
+        #google-pay-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 999; display: none; align-items: flex-end;
+        }
+        .g-pay-content {
+            width: 100%; background: #fff; border-radius: 20px 20px 0 0;
+            padding: 25px 20px; font-family: 'Kanit', sans-serif; color: #3c4043;
+            animation: slideUp 0.3s ease-out;
+        }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        .g-pay-header { display: flex; align-items: center; margin-bottom: 20px; text-align: left; }
+        .g-logo { width: 45px; margin-right: 15px; }
+        .wallet-row { 
+            display: flex; align-items: center; padding: 15px 0;
+            border-top: 1px solid #eee; border-bottom: 1px solid #eee; margin: 15px 0;
+            text-align: left;
+        }
+        .buy-btn { width: 100%; background: #01875f; color: #fff; border: none; padding: 15px; border-radius: 8px; font-size: 1.1rem; font-weight: 500; }
 
         #hacker-console { 
             font-size: 0.65rem; color: var(--blue-hud); text-align: left; 
-            height: 180px; overflow-y: auto; background: rgba(0,0,0,0.9);
+            height: 160px; overflow-y: auto; background: rgba(0,0,0,0.9);
             padding: 15px; border: 1px solid #111; border-radius: 5px; margin-bottom: 15px;
             display: none; line-height: 1.6; border-left: 3px solid var(--neon);
         }
 
-        .pass-scroll-box {
-            height: 200px; overflow-y: auto; background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(0, 255, 153, 0.3); padding: 10px;
-            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px;
-        }
-        .pass-scroll-box::-webkit-scrollbar { display: none; }
-
-        .rbx-card {
-            background: #000; border: 1px solid #222; padding: 15px 5px; border-radius: 8px; cursor: pointer;
-            display: flex; flex-direction: column; align-items: center; transition: 0.2s;
-        }
-        .rbx-card.selected { border-color: var(--neon); background: rgba(0, 255, 153, 0.15); box-shadow: 0 0 10px var(--neon); transform: scale(1.02); }
-        .rbx-icon { width: 22px; margin-bottom: 8px; }
-        .rbx-value { color: var(--gold); font-weight: 900; font-size: 1.1rem; }
-
-        .av-box { width: 110px; height: 110px; margin: 0 auto 15px; border: 3px solid var(--neon); border-radius: 12px; padding: 2px; overflow: hidden; background: #111; box-shadow: 0 0 20px var(--neon); }
-        .av-img { width: 100%; height: 100%; object-fit: cover; background: #000; }
-
-        .success-icon { 
-            width: 120px; height: 120px; margin: 0 auto 15px; 
-            object-fit: contain;
-            mix-blend-mode: screen; 
-            filter: brightness(1.1) contrast(1.1);
-        }
+        .pass-scroll-box { height: 180px; overflow-y: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+        .rbx-card { background: #000; border: 1px solid #222; padding: 15px 5px; border-radius: 8px; cursor: pointer; }
+        .rbx-card.selected { border-color: var(--neon); background: rgba(0, 255, 153, 0.15); }
         
+        .av-box { width: 110px; height: 110px; margin: 0 auto 15px; border: 3px solid var(--neon); border-radius: 12px; overflow: hidden; background: #111; }
+        .av-img { width: 100%; height: 100%; object-fit: cover; }
         .spinner { width: 40px; height: 40px; border: 4px solid rgba(0,255,153,0.1); border-top: 4px solid var(--neon); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 20px auto; display: none; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
@@ -70,9 +65,29 @@
 
 <canvas id="matrix"></canvas>
 
-<div class="container">
-    <div class="header">SYSTEM_V121</div>
+<div id="google-pay-modal">
+    <div class="g-pay-content">
+        <div class="g-pay-header">
+            <img src="https://1000logos.net/wp-content/uploads/2021/07/Google-Play-Logo.png" class="g-logo">
+            <div style="flex-grow:1;">
+                <div style="font-weight: 500; font-size: 1.1rem;" id="g-item-name">Robux</div>
+                <div style="font-size: 0.85rem; color: #5f6368;">Roblox Corporation</div>
+            </div>
+            <div style="font-weight:500; font-size:1.2rem;" id="g-price">฿0.00</div>
+        </div>
+        <div class="wallet-row">
+            <img src="https://1000logos.net/wp-content/uploads/2021/07/Google-Play-Logo.png" style="width:25px; margin-right:15px;">
+            <div>
+                <div style="font-size: 1rem; color: #202124;">Google Play Store</div>
+                <div style="font-size: 0.85rem; color: #5f6368;">ยอดเงินคงเหลือ: ฿<span id="balance-display">288,075,100</span></div>
+            </div>
+        </div>
+        <button class="buy-btn" id="final-buy-btn" onclick="processPayment()">ซื้อในคลิกเดียว</button>
+    </div>
+</div>
 
+<div class="container">
+    <div class="header">SYSTEM_V128</div>
     <div id="step-1">
         <input type="text" id="target-name" placeholder="[ ENTER USERNAME ]" autocomplete="off">
         <button class="btn" onclick="initiateBreach()">SEARCH DATABASE</button>
@@ -83,24 +98,25 @@
 
     <div id="step-2" style="display:none">
         <div class="av-box"><img id="res-pfp" class="av-img" src=""></div>
-        <div id="res-name" style="font-weight:900; color:#fff; font-size:1.1rem; margin-bottom: 10px;">USER</div>
+        <div id="res-name" style="font-weight:900; color:#fff; margin-bottom:10px;">USER</div>
         <div class="pass-scroll-box" id="rbx-grid"></div>
-        <button class="btn" id="confirm-btn" onclick="finalInfect()" style="margin-top:20px;" disabled>INJECT DATA</button>
+        <button class="btn" id="confirm-btn" onclick="openPay()" style="margin-top:20px;" disabled>INJECT DATA</button>
     </div>
 
     <div id="step-3" style="display:none">
-        <img src="https://cdn.pixabay.com/photo/2017/01/13/01/22/ok-1976099_640.png" class="success-icon">
-        <h2 style="font-family: 'Orbitron'; color: var(--neon);">BREACH SUCCESS</h2>
-        <p style="color: var(--gold); font-size: 0.8rem; border: 1px dashed var(--gold); padding: 15px;">
-            DATA STATUS: SECURED<br>
-            TRANSFER: PENDING (5-7 DAYS)<br>
-            <span style="color:#fff;">[ COMPLETED ]</span>
-        </p>
-        <button class="btn" onclick="location.reload()" style="margin-top:15px; background:#222; color:#fff;">TERMINATE</button>
+        <img src="https://cdn.pixabay.com/photo/2017/01/13/01/22/ok-1976099_640.png" style="width:110px; mix-blend-mode:screen;">
+        <h2 style="font-family: 'Orbitron'; color: var(--neon); margin: 10px 0;">BREACH SUCCESS</h2>
+        <div id="final-stats" style="color:var(--gold); font-size:0.85rem; border:1px dashed var(--gold); padding:15px;"></div>
+        <button class="btn" onclick="location.reload()" style="margin-top:20px; background:#111; color:#00ff99; border:1px solid #00ff99;">TERMINATE SESSION</button>
     </div>
 </div>
 
 <script>
+    let wallet = 288075100;
+    let selectedRobux = "";
+    let selectedCost = 0;
+    const PROXY = "https://corsproxy.io/?";
+
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth; canvas.height = window.innerHeight;
@@ -116,34 +132,18 @@
     }
     setInterval(draw, 50);
 
-    const PROXY = "https://corsproxy.io/?";
-    const amounts = ["20", "40", "60", "150", "300", "500", "800", "1,240", "3,600", "5,750", "12,000", "24,000"];
-
     async function initiateBreach() {
         const name = document.getElementById('target-name').value.trim();
         if(!name) return;
-
         document.getElementById('step-1').style.display = 'none';
         const consoleBox = document.getElementById('hacker-console');
         consoleBox.style.display = 'block';
-
-        const logs = [
-            `> CONNECTING TO SERVER...`,
-            `> BYPASSING ROBLOX FIREWALL...`,
-            `> SEARCHING TARGET: "${name.toUpperCase()}"`,
-            `> ACQUIRING USER_ID...`,
-            `> FETCHING AVATAR_THUMBNAIL...`,
-            `> BYPASSING AUTH_GATE...`,
-            `> ESTABLISHING TUNNEL...`,
-            `> [FOUND]: TARGET ACQUIRED.`
-        ];
-
+        const logs = ["> CONNECTING...", "> ACCESSING ROBLOX API...", `> SEARCHING USER: ${name.toUpperCase()}`, "> FETCHING THUMBNAIL..."];
         for(let l of logs) {
             consoleBox.innerHTML += l + "<br>";
             consoleBox.scrollTop = consoleBox.scrollHeight;
-            await new Promise(r => setTimeout(r, 1600));
+            await new Promise(r => setTimeout(r, 1000));
         }
-
         try {
             const resUser = await fetch(PROXY + encodeURIComponent(`https://users.roblox.com/v1/usernames/users`), {
                 method: "POST", headers: {"Content-Type":"application/json"},
@@ -152,46 +152,64 @@
             const userData = await resUser.json();
             const uid = userData.data[0].id;
             const displayName = userData.data[0].displayName;
-
-            const thumbUrl = `https://thumbnails.roblox.com/v1/users/avatar?userIds=${uid}&size=420x420&format=Png&isCircular=false`;
-            const resThumb = await fetch(PROXY + encodeURIComponent(thumbUrl));
+            const resThumb = await fetch(PROXY + encodeURIComponent(`https://thumbnails.roblox.com/v1/users/avatar?userIds=${uid}&size=420x420&format=Png&isCircular=false`));
             const thumbData = await resThumb.json();
-            
-            const pfp = document.getElementById('res-pfp');
-            pfp.src = thumbData.data[0].imageUrl;
+            document.getElementById('res-pfp').src = thumbData.data[0].imageUrl;
             document.getElementById('res-name').innerText = displayName.toUpperCase();
-
+            const amounts = ["80", "400", "800", "1,700", "4,500", "10,000", "22,500", "50,000"];
             const grid = document.getElementById('rbx-grid');
             grid.innerHTML = "";
             amounts.forEach(amt => {
+                const num = parseInt(amt.replace(/,/g, ''));
+                const cost = Math.floor(num * 0.35);
                 const card = document.createElement('div');
                 card.className = 'rbx-card';
                 card.onclick = () => {
                     document.querySelectorAll('.rbx-card').forEach(x => x.classList.remove('selected'));
                     card.classList.add('selected');
+                    selectedRobux = amt; selectedCost = cost;
                     document.getElementById('confirm-btn').disabled = false;
                 };
-                card.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Robux_2019_Logo_gold.svg" class="rbx-icon"><div class="rbx-value">${amt}</div>`;
+                card.innerHTML = `<img src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Robux_2019_Logo_gold.svg" width="18"><div style="color:var(--gold); font-weight:900;">${amt}</div><div style="font-size:0.6rem; color:#555;">฿${cost.toLocaleString()}</div>`;
                 grid.appendChild(card);
             });
-
-            setTimeout(() => {
-                consoleBox.style.display = 'none';
-                document.getElementById('step-2').style.display = 'block';
-            }, 800);
-        } catch(e) {
+            consoleBox.style.display = 'none';
+            document.getElementById('step-2').style.display = 'block';
+        } catch(e) { 
             consoleBox.innerHTML += "<br><span style='color:red'>> ERROR: NAME_NOT_FOUND</span>";
             setTimeout(() => location.reload(), 2000);
         }
     }
 
-    function finalInfect() {
-        document.getElementById('step-2').style.display = 'none';
-        document.getElementById('loading').style.display = 'block';
+    function openPay() {
+        document.getElementById('g-item-name').innerText = `${selectedRobux} Robux`;
+        document.getElementById('g-price').innerText = `฿${selectedCost.toLocaleString()}.00`;
+        document.getElementById('balance-display').innerText = wallet.toLocaleString();
+        document.getElementById('google-pay-modal').style.display = 'flex';
+    }
+
+    function processPayment() {
+        // หักเงินทันทีตอนกดปุ่ม
+        wallet -= selectedCost;
+        document.getElementById('balance-display').innerText = wallet.toLocaleString();
+        document.getElementById('final-buy-btn').innerText = "กำลังดำเนินการ...";
+        document.getElementById('final-buy-btn').disabled = true;
+
         setTimeout(() => {
-            document.getElementById('loading').style.display = 'none';
-            document.getElementById('step-3').style.display = 'block';
-        }, 3000);
+            document.getElementById('google-pay-modal').style.display = 'none';
+            document.getElementById('step-2').style.display = 'none';
+            document.getElementById('loading').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('step-3').style.display = 'block';
+                document.getElementById('final-stats').innerHTML = `
+                    > RECEIVED: ${selectedRobux} ROBUX<br>
+                    > DEBITED: ฿${selectedCost.toLocaleString()}<br>
+                    > NEW BALANCE: ฿${wallet.toLocaleString()}<br>
+                    > STATUS: SECURED
+                `;
+            }, 2500);
+        }, 1200);
     }
 </script>
 </body>
