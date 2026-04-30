@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PISIT | UNLOCK DOWNLOAD</title>
+    <style>
+        body { background-color: #050505; color: #fff; font-family: 'Arial', sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .container { background: #111; padding: 40px; border-radius: 20px; border: 2px solid #ff0050; text-align: center; width: 350px; box-shadow: 0 0 20px #ff0050; }
+        
+        /* ปุ่ม TikTok สีแดง */
+        .tiktok-btn { background: #ff0050; color: #fff; padding: 15px; border-radius: 10px; text-decoration: none; display: block; font-weight: bold; margin-bottom: 20px; transition: 0.3s; }
+        .tiktok-btn:hover { transform: scale(1.05); background: #fff; color: #ff0050; }
+
+        /* ตัวหมุน Loading */
+        #loader { display: none; border: 4px solid #333; border-top: 4px solid #00f2ea; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 15px auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        #timer { color: #00f2ea; display: none; margin-bottom: 20px; font-weight: bold; }
+
+        /* ปุ่มดาวน์โหลดสีเขียว (ตอนแรกกดไม่ได้) */
+        .download-btn { background: #28a745; color: #fff; padding: 15px; border-radius: 10px; text-decoration: none; display: none; font-weight: bold; cursor: pointer; border: none; width: 100%; font-size: 16px; }
+        .download-btn:hover { background: #218838; box-shadow: 0 0 15px #28a745; }
+
+        /* หน้าต่างดาวน์โหลด (ขั้นที่ 2) */
+        #download-screen { display: none; border-color: #00f2ea; box-shadow: 0 0 20px #00f2ea; }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="unlock-screen">
+        <h2 style="color: #ff0050;">STEP 1</h2>
+        <p>ติดตามช่อง TikTok ก่อนเพื่อปลดล็อค</p>
+        <a href="https://www.tiktok.com/@zxtata0?_r=1&_t=ZS-95ySH8wfKk8" target="_blank" class="tiktok-btn" onclick="startUnlock()">
+            <img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" width="20" style="vertical-align:middle;"> ติดตาม @zxtata0
+        </a>
+        
+        <div id="loader"></div>
+        <div id="timer">กรุณารอ <span id="count">10</span> วินาที...</div>
+
+        <button id="green-btn" class="download-btn" onclick="showDownloadPage()">เข้าสู่หน้าดาวน์โหลด</button>
+    </div>
+
+    <div class="container" id="download-screen">
+        <h2 style="color: #00f2ea;">PISIT HUB</h2>
+        <p>คุณต้องการดาวน์โหลดไฟล์<br><b>"มองทะลุหมาป่าเดียวดาย"</b> หรือไม่?</p>
+        <div style="margin: 20px 0;">
+            <img src="https://cdn-icons-png.flaticon.com/512/1150/1150592.png" width="80">
+        </div>
+        
+        <a href="https://drive.google.com/uc?export=download&id=1f-gdY0pAWR-peivgnDJNMyjCZLI1Ula3" class="download-btn" style="display:block;">DOWNLOAD NOW</a>
+    </div>
+
+    <script>
+        function startUnlock() {
+            // โชว์ตัวหมุนและเวลานับถอยหลัง
+            document.getElementById('loader').style.display = 'block';
+            document.getElementById('timer').style.display = 'block';
+            
+            let timeLeft = 10;
+            let downloadTimer = setInterval(function(){
+                if(timeLeft <= 0){
+                    clearInterval(downloadTimer);
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('timer').style.display = 'none';
+                    document.getElementById('green-btn').style.display = 'block';
+                } else {
+                    document.getElementById('count').innerHTML = timeLeft;
+                }
+                timeLeft -= 1;
+            }, 1000);
+        }
+
+        function showDownloadPage() {
+            document.getElementById('unlock-screen').style.display = 'none';
+            document.getElementById('download-screen').style.display = 'block';
+        }
+    </script>
+
+</body>
+  </html>
+
+
